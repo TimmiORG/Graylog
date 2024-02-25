@@ -1,0 +1,176 @@
+{
+  "extractors": [
+    {
+      "title": "OPNsense: IPv6 UDP",
+      "extractor_type": "regex",
+      "converters": [
+        {
+          "type": "csv",
+          "config": {
+            "column_header": "rule-number,sub-rule-number,anchor,tracker,interface,reason,action,direction,ip-version,class,flowlabel,hoplimit,protocol-name,protocol-id,length,src-ip,dst-ip,src-port,dst-port,opnsense-rid"
+          }
+        }
+      ],
+      "order": 6,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "filterlog_ipv6_udp",
+      "extractor_config": {
+        "regex_value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*)$"
+      },
+      "condition_type": "regex",
+      "condition_value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*,(in|out),6,.*,udp,.*)$"
+    },
+    {
+      "title": "OPNsense: IPv4 UDP",
+      "extractor_type": "regex",
+      "converters": [
+        {
+          "type": "csv",
+          "config": {
+            "column_header": "rule-number,sub-rule-number,anchor,tracker,interface,reason,action,direction,ip-version,tos,ecn,ttl,id,offset,flags,protocol-id,protocol-name,length,src-ip,dst-ip,src-port,dst-port,opnsense-rid",
+            "trim_leading_whitespace": true
+          }
+        }
+      ],
+      "order": 5,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "filterlog_ipv4_udp",
+      "extractor_config": {
+        "regex_value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*)$"
+      },
+      "condition_type": "regex",
+      "condition_value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*,(in|out),4,.*,udp,.*)$"
+    },
+    {
+      "title": "OPNsense: IPv4 TCP",
+      "extractor_type": "regex",
+      "converters": [
+        {
+          "type": "csv",
+          "config": {
+            "column_header": "rule-number,sub-rule-number,anchor,tracker,interface,reason,action,direction,ip-version,tos,ecn,ttl,id,offset,ip-flags,protocol-id,protocol-name,length,src-ip,dst-ip,src-port,dst-port,datalength,tcp-flags,sequence,f1,f2,tcp-options,opnsense-rid",
+            "trim_leading_whitespace": true
+          }
+        }
+      ],
+      "order": 2,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "filterlog_ipv4_tcp",
+      "extractor_config": {
+        "regex_value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*)$"
+      },
+      "condition_type": "regex",
+      "condition_value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*,(in|out),4,.*,tcp,.*)$"
+    },
+    {
+      "title": "OPNsense: IPv4 ICMP",
+      "extractor_type": "regex",
+      "converters": [
+        {
+          "type": "csv",
+          "config": {
+            "column_header": "rule-number,sub-rule-number,anchor,tracker,interface,reason,action,direction,ip-version,tos,ecn,ttl,id,offset,flags,protocol-id,protocol-name,length,src-ip,dst-ip,datalength"
+          }
+        }
+      ],
+      "order": 7,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "filterlog_ipv4_icmp",
+      "extractor_config": {
+        "regex_value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*)$"
+      },
+      "condition_type": "regex",
+      "condition_value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*,(in|out),4,.*,icmp,.*)$"
+    },
+    {
+      "title": "OPNsense: IPv6 ICMP",
+      "extractor_type": "regex",
+      "converters": [
+        {
+          "type": "csv",
+          "config": {
+            "column_header": "rule-number,sub-rule-number,anchor,tracker,interface,reason,action,direction,ip-version,class,flowlabel,hoplimit,protocol-name,protocol-id,length,src-ip,dst-ip,datalength"
+          }
+        }
+      ],
+      "order": 8,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "filterlog_ipv6_icmp",
+      "extractor_config": {
+        "regex_value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*)$"
+      },
+      "condition_type": "regex",
+      "condition_value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*,(in|out),6,.*,ipv6-icmp,.*)$"
+    },
+    {
+      "title": "OPNSense OpenVPN Login",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 3,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}?(: user ')%{USERNAME:openvpn_user}?(' authenticated using )"
+      },
+      "condition_type": "string",
+      "condition_value": "LDAP and Google Authenticator "
+    },
+    {
+      "title": "unbound-resolve-name",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 1,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}%{GREEDYDATA}(info: )%{IP:src-ip}%{SPACE}%{HOSTNAME:dns-resolve}(. .* IN)"
+      },
+      "condition_type": "string",
+      "condition_value": "unbound"
+    },
+    {
+      "title": "Try to get Program",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 0,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}"
+      },
+      "condition_type": "none",
+      "condition_value": ""
+    },
+    {
+      "title": "OPNsense: IPv6 TCP",
+      "extractor_type": "regex",
+      "converters": [
+        {
+          "type": "csv",
+          "config": {
+            "column_header": "rule-number,sub-rule-number,anchor,tracker,interface,reason,action,direction,ip-version,class,flowlabel,hoplimit,protocol-name,protocol-id,length,src-ip,dst-ip,src-port,dst-port,datalength,tcp-flags,sequence,ack,window,options,opnsense-rid",
+            "trim_leading_whitespace": true
+          }
+        }
+      ],
+      "order": 4,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "filterlog_ipv6_tcp",
+      "extractor_config": {
+        "regex_value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*)$"
+      },
+      "condition_type": "regex",
+      "condition_value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*,(in|out),6,.*,tcp,.*)$"
+    }
+  ],
+  "version": "5.2.4"
+}
