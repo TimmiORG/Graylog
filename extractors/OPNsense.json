@@ -11,7 +11,7 @@
           }
         }
       ],
-      "order": 6,
+      "order": 7,
       "cursor_strategy": "copy",
       "source_field": "message",
       "target_field": "filterlog_ipv6_udp",
@@ -33,7 +33,7 @@
           }
         }
       ],
-      "order": 5,
+      "order": 6,
       "cursor_strategy": "copy",
       "source_field": "message",
       "target_field": "filterlog_ipv4_udp",
@@ -55,7 +55,7 @@
           }
         }
       ],
-      "order": 2,
+      "order": 3,
       "cursor_strategy": "copy",
       "source_field": "message",
       "target_field": "filterlog_ipv4_tcp",
@@ -76,7 +76,7 @@
           }
         }
       ],
-      "order": 7,
+      "order": 8,
       "cursor_strategy": "copy",
       "source_field": "message",
       "target_field": "filterlog_ipv4_icmp",
@@ -97,7 +97,7 @@
           }
         }
       ],
-      "order": 8,
+      "order": 9,
       "cursor_strategy": "copy",
       "source_field": "message",
       "target_field": "filterlog_ipv6_icmp",
@@ -111,7 +111,7 @@
       "title": "OPNSense OpenVPN Login",
       "extractor_type": "grok",
       "converters": [],
-      "order": 3,
+      "order": 4,
       "cursor_strategy": "copy",
       "source_field": "message",
       "target_field": "",
@@ -125,7 +125,7 @@
       "title": "unbound-resolve-name",
       "extractor_type": "grok",
       "converters": [],
-      "order": 1,
+      "order": 2,
       "cursor_strategy": "copy",
       "source_field": "message",
       "target_field": "",
@@ -139,7 +139,7 @@
       "title": "Try to get Program",
       "extractor_type": "grok",
       "converters": [],
-      "order": 0,
+      "order": 1,
       "cursor_strategy": "copy",
       "source_field": "message",
       "target_field": "",
@@ -161,7 +161,7 @@
           }
         }
       ],
-      "order": 4,
+      "order": 5,
       "cursor_strategy": "copy",
       "source_field": "message",
       "target_field": "filterlog_ipv6_tcp",
@@ -170,6 +170,20 @@
       },
       "condition_type": "regex",
       "condition_value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*,(in|out),6,.*,tcp,.*)$"
+    },
+    {
+      "title": "OPNsense Link State Changed",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 0,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}(: <6>)%{GREEDYDATA:interface}(: )%{GREEDYDATA}%{OPNsense_Link_State}"
+      },
+      "condition_type": "string",
+      "condition_value": "exit.voipfuture.com kernel:"
     }
   ],
   "version": "5.2.4"
