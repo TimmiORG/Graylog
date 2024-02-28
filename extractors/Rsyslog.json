@@ -1,0 +1,318 @@
+{
+  "extractors": [
+    {
+      "title": "SSH Login",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 14,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}?(: )%{SSH_AUTH_RESULT:ssh_auth_result}%{SPACE}%{SSH_AUTH_METHOD:ssh_auth_method}?( for )%{USERNAME:ssh_username}?( from )%{SSH_REMOTE_SOCKET:ssh_remote_socket}"
+      },
+      "condition_type": "string",
+      "condition_value": "ssh2"
+    },
+    {
+      "title": "SSH Login Invalid",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 15,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}?(: )%{SSH_AUTH_RESULT:ssh_auth_result}%{SPACE}%{SSH_AUTH_METHOD:ssh_auth_method}?( for invalid user )%{USERNAME:ssh_username}?( from )%{SSH_REMOTE_SOCKET:ssh_remote_socket}"
+      },
+      "condition_type": "string",
+      "condition_value": "ssh2"
+    },
+    {
+      "title": "Nextcloud JSON Extractor",
+      "extractor_type": "regex",
+      "converters": [],
+      "order": 10,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "nc_json",
+      "extractor_config": {
+        "regex_value": "nextcloud\\[\\b(?:[1-9][0-9]*)\\b\\]:\\s+(.*)"
+      },
+      "condition_type": "string",
+      "condition_value": "nextcloud["
+    },
+    {
+      "title": "SSH Disconnect",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 16,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}?(: )%{SSH_CONNECTION:ssh_connection}?( from user )%{USERNAME:ssh_username}%{SPACE}%{SSH_REMOTE_SOCKET:ssh_remote_socket}"
+      },
+      "condition_type": "string",
+      "condition_value": "Disconnected"
+    },
+    {
+      "title": "SUDO Open",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 17,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}?(: pam_unix\\(sudo:session\\): )%{SUDO_SESSION_STATUS:sudo_session_status}?( for user )%{USER:sudo_user}%{GREEDYDATA}?( by )%{USER:ssh_username}%{GREEDYDATA}"
+      },
+      "condition_type": "string",
+      "condition_value": "sudo"
+    },
+    {
+      "title": "SUDO Closed",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 18,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}?(: pam_unix\\(sudo:session\\): )%{SUDO_SESSION_STATUS:sudo_session_status}?( for user )%{USER:sudo_user}"
+      },
+      "condition_type": "string",
+      "condition_value": "sudo"
+    },
+    {
+      "title": "Nextcloud Program",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 9,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{NEXTCLOUD:program}"
+      },
+      "condition_type": "string",
+      "condition_value": "nextcloud"
+    },
+    {
+      "title": "Nextcloud JSON Field Extractor",
+      "extractor_type": "json",
+      "converters": [],
+      "order": 11,
+      "cursor_strategy": "copy",
+      "source_field": "nc_json",
+      "target_field": "",
+      "extractor_config": {
+        "list_separator": ", ",
+        "kv_separator": "=",
+        "key_prefix": "nc_",
+        "key_separator": "_",
+        "replace_key_whitespace": false,
+        "key_whitespace_replacement": "_"
+      },
+      "condition_type": "none",
+      "condition_value": ""
+    },
+    {
+      "title": "Try to get program",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 8,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}"
+      },
+      "condition_type": "none",
+      "condition_value": ""
+    },
+    {
+      "title": "SuiteCRM Failed Login",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 12,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}%{GREEDYDATA}?(\\[FATAL\\] )%{SUITECRM_LOGIN_STATUS:suitecrm_login_status}?(:attempts\\[)%{NUMBER:suitecrm_login_attempts}?(\\])?(, ip\\[)%{IP:remote_addr}?(\\], username\\[)%{USERNAME:suitecrm_username}?(\\])"
+      },
+      "condition_type": "string",
+      "condition_value": "suitecrm"
+    },
+    {
+      "title": "Wordpress Login Extractor",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 13,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}%{GREEDYDATA}?( voipfuture.com )%{IP:remote_addr}%{GREEDYDATA}?(User authentication )%{WORDPRESS_LOGIN_STATE:wordpress_login}?(: )%{FULL_NAME:wordpress_username}"
+      },
+      "condition_type": "string",
+      "condition_value": "WordPressAudit"
+    },
+    {
+      "title": "proFTPd Session Closed",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 19,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}%{GREEDYDATA}?( \\()%{IP:remote_addr}%{GREEDYDATA}?(: FTP )%{GREEDYDATA:ftp_login}?(.)"
+      },
+      "condition_type": "string",
+      "condition_value": "proftpd"
+    },
+    {
+      "title": "proFTPd Login Success",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 20,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}%{GREEDYDATA}?( \\()%{IP:remote_addr}%{GREEDYDATA}?(USER )%{USER:ftp_username}?(: )%{GREEDYDATA:ftp_login}%{GREEDYDATA}"
+      },
+      "condition_type": "string",
+      "condition_value": "proftpd"
+    },
+    {
+      "title": "Kerio Connect Security Log Failed HTTP - Invalid User",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 0,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}:(?<tmp>[\\w\\W]*)%{KERIO_HTTP_METHOD:kerio_method}(:)%{KERIO_USER_LOG:kerio_smtp_login}%{EMAILADDRESS}%{KERIO_USER_LOG:kerio_smtp_login}(. Attempt from IP address )%{IPORHOST:kerio_remote_host}(.)"
+      },
+      "condition_type": "string",
+      "condition_value": "mail.voipfuture.com Kerio-Security: ﻿ HTTP"
+    },
+    {
+      "title": "Kerio Connect Security Log Failed HTTP - Invalid Password",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 2,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}(:)(?<tmp>[\\w\\W]*)%{KERIO_HTTP_METHOD:kerio_method}(: )%{KERIO_USER_LOG:kerio_smtp_login}%{EMAILADDRESS}(. Attempt from IP address )%{IPORHOST:kerio_remote_host}(.)"
+      },
+      "condition_type": "string",
+      "condition_value": "mail.voipfuture.com Kerio-Security: ﻿ HTTP"
+    },
+    {
+      "title": "Kerio Connect Security Log Failed SMTP",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 3,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}:(?<tmp>[\\w\\W]*)%{KERIO_SMTP_LOGIN:kerio_smtp_login}( from )%{IPORHOST:kerio_remote_host}%{GREEDYDATA:kerio_method}?(.)"
+      },
+      "condition_type": "string",
+      "condition_value": "Kerio-Security"
+    },
+    {
+      "title": "Kerio-Security Program",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 21,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}(:)"
+      },
+      "condition_type": "string",
+      "condition_value": "mail.voipfuture.com Kerio-Security:"
+    },
+    {
+      "title": "Crowdsec_Block_Event",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 7,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}%{GREEDYDATA}(level=info msg=\"Ip )%{IP:src-ip}( performed ')%{GREEDYDATA:crowdsec_scenario}(' \\()%{GREEDYDATA:crowdsec_event_info}(\\) at )%{GREEDYDATA}"
+      },
+      "condition_type": "string",
+      "condition_value": "crowdsec"
+    },
+    {
+      "title": "Kerio Connect Security Log Blacklist",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 5,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}:%{GREEDYDATA}address %{IPORHOST:kerio_remote_host} found in %{GREEDYDATA:kerio_method}, mail from %{GREEDYDATA:kerio_smtp_login}"
+      },
+      "condition_type": "string",
+      "condition_value": "Kerio-Security: ﻿ IP address"
+    },
+    {
+      "title": "Kerio Connect Security Log Failed IMAP - Invalid User",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 4,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}:( ﻿ )%{GREEDYDATA:kerio_method}(:)%{GREEDYDATA:kerio_smtp_login}(. Attempt from IP address )%{IPORHOST:kerio_remote_host}(.)"
+      },
+      "condition_type": "string",
+      "condition_value": "IMAP: User "
+    },
+    {
+      "title": "Kerio Connect Security Log SPF Check failed",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 1,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}:(?<tmp>[\\w\\W]*)%{KERIO_SPF_CHECK:kerio_method} failed: The IP address '%{IPORHOST:kerio_remote_host}' %{GREEDYDATA:kerio_smtp_login}"
+      },
+      "condition_type": "string",
+      "condition_value": "SPF check failed: The IP address"
+    },
+    {
+      "title": "Kerio Connect Security Log - Relay Attempt",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 6,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}:%{GREEDYDATA:kerio_method}( from IP address )%{IP:kerio_remote_host}(, )%{GREEDYDATA:kerio_smtp_login}"
+      },
+      "condition_type": "none",
+      "condition_value": ""
+    }
+  ],
+  "version": "5.2.4"
+}
