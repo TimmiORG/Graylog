@@ -268,7 +268,21 @@
       },
       "condition_type": "regex",
       "condition_value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*,(in|out),4,.*,ipencap,.*)$"
+    },
+    {
+      "title": "OPNsense: dpinger",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 0,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{SYSLOGHOST}%{SPACE}%{SYSLOGPROG}(: MONITOR: )%{GREEDYDATA:router_gw}( \\(Addr: )%{IP}( )%{GREEDYDATA:gw_status}(RTT: )%{GREEDYDATA}"
+      },
+      "condition_type": "string",
+      "condition_value": "exit.voipfuture.com dpinger"
     }
   ],
-  "version": "5.2.5"
+  "version": "5.2.7"
 }
