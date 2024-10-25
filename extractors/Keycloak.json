@@ -1,77 +1,77 @@
 {
   "extractors": [
     {
-      "title": "Extract RealmId",
+      "title": "Keycloak - Extract RealmId",
       "extractor_type": "regex",
       "converters": [],
       "order": 0,
       "cursor_strategy": "copy",
-      "source_field": "full_message",
+      "source_field": "message",
       "target_field": "realmId",
       "extractor_config": {
         "regex_value": "realmId=\"([a-zA-Z0-9.-]+)\""
       },
-      "condition_type": "none",
-      "condition_value": ""
+      "condition_type": "string",
+      "condition_value": "keycloak"
     },
     {
-      "title": "Extract error event type",
+      "title": "Keycloak - Extract error event type",
       "extractor_type": "regex",
       "converters": [],
       "order": 0,
       "cursor_strategy": "copy",
-      "source_field": "full_message",
+      "source_field": "message",
       "target_field": "error",
       "extractor_config": {
         "regex_value": "error=\"([^,]+)\""
       },
-      "condition_type": "none",
-      "condition_value": ""
+      "condition_type": "string",
+      "condition_value": "keycloak"
     },
     {
-      "title": "Extract ipAddress",
+      "title": "Keycloak - Extract ipAddress",
       "extractor_type": "regex",
       "converters": [],
       "order": 0,
       "cursor_strategy": "copy",
-      "source_field": "full_message",
+      "source_field": "message",
       "target_field": "remote_addr",
       "extractor_config": {
         "regex_value": "ipAddress=\"([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3})\""
       },
-      "condition_type": "none",
-      "condition_value": ""
+      "condition_type": "string",
+      "condition_value": "keycloak"
     },
     {
-      "title": "Extract ClientId",
+      "title": "Keycloak - Extract ClientId",
       "extractor_type": "regex",
       "converters": [],
       "order": 0,
       "cursor_strategy": "copy",
-      "source_field": "full_message",
+      "source_field": "message",
       "target_field": "clientId",
       "extractor_config": {
         "regex_value": "clientId=\"([a-zA-Z0-9\\.\\-\\:\\/]+)\""
       },
-      "condition_type": "none",
-      "condition_value": ""
+      "condition_type": "string",
+      "condition_value": "keycloak"
     },
     {
-      "title": "Extract IDM Username",
+      "title": "Keycloak - Extract IDM Username",
       "extractor_type": "regex",
       "converters": [],
       "order": 0,
       "cursor_strategy": "copy",
-      "source_field": "full_message",
+      "source_field": "message",
       "target_field": "username",
       "extractor_config": {
         "regex_value": "username=\"([a-zA-Z0-9.-_]+)\""
       },
-      "condition_type": "none",
-      "condition_value": ""
+      "condition_type": "string",
+      "condition_value": "keycloak"
     },
     {
-      "title": "Extract IDM UserId",
+      "title": "Keycloak - Extract IDM UserId",
       "extractor_type": "regex",
       "converters": [],
       "order": 0,
@@ -81,11 +81,11 @@
       "extractor_config": {
         "regex_value": "userId=\"([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\""
       },
-      "condition_type": "none",
-      "condition_value": ""
+      "condition_type": "string",
+      "condition_value": "keycloak"
     },
     {
-      "title": "Extract login event type",
+      "title": "Keycloak - Extract login event type",
       "extractor_type": "regex",
       "converters": [],
       "order": 0,
@@ -95,9 +95,9 @@
       "extractor_config": {
         "regex_value": "type=\"([^,]+)\""
       },
-      "condition_type": "none",
-      "condition_value": ""
+      "condition_type": "string",
+      "condition_value": "keycloak"
     }
   ],
-  "version": "24.0.2"
+  "version": "6.1.1"
 }
