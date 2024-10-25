@@ -65,7 +65,7 @@
       "source_field": "message",
       "target_field": "username",
       "extractor_config": {
-        "regex_value": "username=\"([a-zA-Z0-9.-_]+)\""
+        "regex_value": "username=\"([a-zA-Z0-9._-]+)\""
       },
       "condition_type": "string",
       "condition_value": "keycloak"
